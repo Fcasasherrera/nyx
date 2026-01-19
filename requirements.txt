@@ -1,3 +1,5 @@
 pyttsx3 
 tk
 keyboard
+python-dotenv
+pyfiglet

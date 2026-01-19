@@ -1,0 +1,7 @@
+Start
+
+.\nyx-ssh.exe /bind:0.0.0.0:2022 /motd:banner.txt
+
+Connect
+{{username}}@route or ip
+ssh -p 2022 {{Gh0stPr0t0c0l}}@127.0.0.1
