@@ -3,8 +3,6 @@ from colorama import Fore, Style, init
 
 init()
 
-
-
 # Lista de alias hacker para el AI
 AI_ALIASES = [
     "N3m3s1s",
