@@ -1,0 +1,28 @@
+{
+  "user": {
+    "title": "Sr. Fernando",
+    "city": "Guadalajara"
+  },
+  "paths": {
+    "vscode": "C:\\Users\\fecasas\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+    "project_fajillassap": "C:\\Users\\fecasas\\code\\fajillassap",
+    "project_fastapi": "C:\\Users\\fecasas\\code\\FASTAPI",
+    "chrome": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "thunderbird": "C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe"
+  },
+  "web": {
+    "mavipos_url": "http://mavipos-frontend.s3-website-us-east-1.amazonaws.com/Mavipos",
+    "chrome_flags_profile": "--user-data-dir=\"C:\\temp_chrome\" --disable-web-security --disable-site-isolation-trials"
+  },
+  "voice": {
+    "enabled": true,
+    "rate": 170,
+    "volume": 1.0,
+    "female_preferred": true,
+    "greeting": "Bienvenido {title}. La diosa Nyx está lista para servirle."
+  },
+  "ui": {
+    "theme": "dark",
+    "show_popup": true
+  }
+}

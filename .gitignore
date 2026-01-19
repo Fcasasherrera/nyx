@@ -1,0 +1,30 @@
+# Entornos virtuales
+venv/
+.env/
+*.env
+
+# Archivos de configuración locales
+*.local
+*.log
+
+# Compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de empaquetado
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Configuración de IDEs
+.vscode/
+.idea/
+
+# Archivos temporales
+*.swp
+*.swo
+*.tmp
+*.bak
