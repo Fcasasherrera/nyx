@@ -1,0 +1,83 @@
+[2026-01-19 17:27:10] [USER] Hola de nuevo jaja 
+[2026-01-19 17:27:17] [ASSISTANT] Hola a ti también! Soy feliz de volver a participar. ¿Qué puedo hacer para ayudarte hoy?
+[2026-01-19 17:27:45] [USER] quiero saber hasta donde van tus capacidades, puedes escribir un codigo en python de una calculadora 
+[2026-01-19 17:28:17] [ASSISTANT] Claro, aqui te dejo un código en Python de una calculadora:
+
+```python
+# Define las funciones de las operaciones
+def suma(num1, num2):
+    return num1 + num2
+
+def resta(num1, num2):
+    return num1 - num2
+
+def multiplicacion(num1, num2):
+    return num1 * num2
+
+def division(num1, num2):
+    return num1 / num2
+
+# Define los números
+num1 = float(input("Ingresa el primer número: "))
+num2 = float(input("Ingresa el segundo número: "))
+
+# Realiza las operaciones
+suma_resultado = suma(num1, num2)
+resta_resultado = resta(num1, num2)
+multiplicacion_resultado = multiplicacion(num1, num2)
+division_resultado = division(num1, num2)
+
+# Imprime los resultados
+print("Suma:", suma_resultado)
+print("Resta:", resta_resultado)
+print("Multiplicación:", multiplicacion_resultado)
+print("División:", division_resultado)
+```
+[2026-01-19 17:29:26] [USER] ahora escribe una landing page en html con tailwind que sea como una carta presentacion a mi perfil, mi nombre es Fernando Fabian Casas Herrera, soy un programador fullstack y mobile con 8 años de experiencia ya programando en disntintos campos y lenguajes, agrega todo lo que tu veas conveniente 
+[2026-01-19 17:30:10] [ASSISTANT] ```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fernando Fabian Casas Herrera</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .profile-picture {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-color: #333;
+      margin: 20px;
+    }
+
+    .name-and-title {
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="profile-picture">
+      <img src="profile_picture.jpg" alt="Profile Picture">
+    </div>
+    <div class="name-and-title">
+      <h1>Fernando Fabian Casas Herrera</h1>
+      <p>Programador Fullstack y Mobile</p>
+    </div>
+  </div>
+</body>
+</html>
+```
