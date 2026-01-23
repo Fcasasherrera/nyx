@@ -87,9 +87,4 @@ Each finished game saves your final score in memory and displays it on screen.
 
 Made with passion by Deph ⚡
 
-```code
-✅ Ahora sí, todo está dentro del bloque de código en formato Markdown. Si lo copias como `README.md`, GitHub lo renderiza con títulos, listas y bloques de comandos bien bonitos.  
-
-¿Quieres que le agregue también un **Quick Start** al inicio (los tres comandos básicos: `git clone`, `npm install`, `node start.js`) para que quede aún más directo para nuevos usuarios?
-```
 ------------------------------------------------------------------------------------------
