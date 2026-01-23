@@ -2,6 +2,7 @@ const readline = require("readline");
 
 const SIZE = 4;
 let board = Array.from({ length: SIZE }, () => Array(SIZE).fill(0));
+let score = 0;
 
 function addRandomTile() {
   let empty = [];
@@ -18,9 +19,20 @@ function addRandomTile() {
 
 function printBoard() {
   console.clear();
-  board.forEach(row => {
-    console.log(row.map(v => (v === 0 ? "." : v)).join("\t"));
-  });
+  console.log("====================================");
+  console.log("           2048 CLI GAME            ");
+  console.log("          Hecho por Deph ⚡          ");
+  console.log("====================================");
+  console.log(`Puntaje: ${score}`);
+  console.log("------------------------------------");
+
+  for (let i = 0; i < SIZE; i++) {
+    let row = board[i]
+      .map(v => (v === 0 ? "." : v.toString().padStart(4, " ")))
+      .join(" | ");
+    console.log(row);
+    if (i < SIZE - 1) console.log("------------------------------------");
+  }
 }
 
 function slide(row) {
@@ -28,6 +40,7 @@ function slide(row) {
   for (let i = 0; i < row.length - 1; i++) {
     if (row[i] === row[i + 1]) {
       row[i] *= 2;
+      score += row[i]; // sumamos al puntaje
       row[i + 1] = 0;
     }
   }
