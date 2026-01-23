@@ -1,4 +1,5 @@
 const Table = require("cli-table3");
+const chalk = require("chalk");
 
 const SIZE = 4;
 let board;
@@ -26,6 +27,23 @@ function addRandomTile() {
   }
 }
 
+function colorize(value) {
+  if (value === 0) return chalk.gray(".");
+  if (value === 2) return chalk.cyan(String(value));
+  if (value === 4) return chalk.green(String(value));
+  if (value === 8) return chalk.yellow(String(value));
+  if (value === 16) return chalk.magenta(String(value));
+  if (value === 32) return chalk.blue(String(value));
+  if (value === 64) return chalk.red(String(value));
+  if (value === 128) return chalk.bgCyan.black(String(value));
+  if (value === 256) return chalk.bgGreen.black(String(value));
+  if (value === 512) return chalk.bgYellow.black(String(value));
+  if (value === 1024) return chalk.bgMagenta.black(String(value));
+  if (value === 2048) return chalk.bgRed.white.bold(String(value));
+  return chalk.white(String(value));
+}
+
+
 function printBoard() {
   console.clear();
   console.log("====================================");
@@ -40,7 +58,7 @@ function printBoard() {
   });
 
   for (let i = 0; i < SIZE; i++) {
-    table.push(board[i].map(v => (v === 0 ? "." : v.toString())));
+    table.push(board[i].map(v => colorize(v)));
   }
 
   console.log(table.toString());
@@ -86,7 +104,6 @@ function moveDown() {
 }
 
 function hasMoves() {
-  // ¿Hay espacios vacíos?
   for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
       if (board[i][j] === 0) return true;
@@ -107,6 +124,21 @@ function checkGameOver() {
   }
 }
 
+function checkWin() {
+  for (let i = 0; i < SIZE; i++) {
+    for (let j = 0; j < SIZE; j++) {
+      if (board[i][j] === 2048) {
+        console.log("\n🏆 ¡GANASTE! 🏆");
+        scoreHistory.push(score);
+        console.log("Tu puntaje final fue:", score);
+        console.log("Presiona cualquier tecla para reiniciar...");
+        initGame();
+      }
+    }
+  }
+}
+
+
 // Inicializar
 initGame();
 
@@ -126,4 +158,5 @@ process.stdin.on("data", (key) => {
   addRandomTile();
   printBoard();
   checkGameOver();
+  checkWin();
 });
