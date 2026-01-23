@@ -1,9 +1,17 @@
-const readline = require("readline");
 const Table = require("cli-table3");
 
 const SIZE = 4;
-let board = Array.from({ length: SIZE }, () => Array(SIZE).fill(0));
-let score = 0;
+let board;
+let score;
+let scoreHistory = [];
+
+function initGame() {
+  board = Array.from({ length: SIZE }, () => Array(SIZE).fill(0));
+  score = 0;
+  addRandomTile();
+  addRandomTile();
+  printBoard();
+}
 
 function addRandomTile() {
   let empty = [];
@@ -24,11 +32,9 @@ function printBoard() {
   console.log("           2048 CLI GAME            ");
   console.log("          Hecho por Deph ⚡          ");
   console.log("====================================");
-  console.log(`Puntaje: ${score}`);
-  console.log("");
+  console.log(`Puntaje: ${score}\n`);
 
   const table = new Table({
-    head: ["", "", "", ""],
     colWidths: [8, 8, 8, 8],
     style: { head: [], border: [] }
   });
@@ -38,6 +44,11 @@ function printBoard() {
   }
 
   console.log(table.toString());
+
+  if (scoreHistory.length) {
+    console.log("\nHistorial de puntajes:");
+    scoreHistory.forEach((s, i) => console.log(`Partida ${i + 1}: ${s}`));
+  }
 }
 
 function slide(row) {
@@ -55,48 +66,64 @@ function slide(row) {
 }
 
 function moveLeft() {
-  for (let i = 0; i < SIZE; i++) {
-    board[i] = slide(board[i]);
-  }
+  for (let i = 0; i < SIZE; i++) board[i] = slide(board[i]);
 }
-
 function moveRight() {
-  for (let i = 0; i < SIZE; i++) {
-    board[i] = slide(board[i].reverse()).reverse();
-  }
+  for (let i = 0; i < SIZE; i++) board[i] = slide(board[i].reverse()).reverse();
 }
-
 function transpose(matrix) {
   return matrix[0].map((_, i) => matrix.map(row => row[i]));
 }
-
 function moveUp() {
   board = transpose(board);
   moveLeft();
   board = transpose(board);
 }
-
 function moveDown() {
   board = transpose(board);
   moveRight();
   board = transpose(board);
 }
 
+function hasMoves() {
+  // ¿Hay espacios vacíos?
+  for (let i = 0; i < SIZE; i++) {
+    for (let j = 0; j < SIZE; j++) {
+      if (board[i][j] === 0) return true;
+      if (j < SIZE - 1 && board[i][j] === board[i][j + 1]) return true;
+      if (i < SIZE - 1 && board[i][j] === board[i + 1][j]) return true;
+    }
+  }
+  return false;
+}
+
+function checkGameOver() {
+  if (!hasMoves()) {
+    console.log("\n💀 GAME OVER 💀");
+    scoreHistory.push(score);
+    console.log("Tu puntaje final fue:", score);
+    console.log("Presiona cualquier tecla para reiniciar...");
+    initGame();
+  }
+}
+
 // Inicializar
-addRandomTile();
-addRandomTile();
-printBoard();
+initGame();
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+// Captura de teclas en tiempo real
+process.stdin.setRawMode(true);
+process.stdin.resume();
+process.stdin.setEncoding("utf8");
 
-rl.on("line", (input) => {
-  if (input === "a") moveLeft();
-  if (input === "d") moveRight();
-  if (input === "w") moveUp();
-  if (input === "s") moveDown();
+process.stdin.on("data", (key) => {
+  if (key === "\u0003") process.exit(); // Ctrl+C para salir
+
+  if (key === "\u001B\u005B\u0044") moveLeft();   // ←
+  if (key === "\u001B\u005B\u0043") moveRight();  // →
+  if (key === "\u001B\u005B\u0041") moveUp();     // ↑
+  if (key === "\u001B\u005B\u0042") moveDown();   // ↓
+
   addRandomTile();
   printBoard();
+  checkGameOver();
 });
