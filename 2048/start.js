@@ -1,4 +1,5 @@
 const readline = require("readline");
+const Table = require("cli-table3");
 
 const SIZE = 4;
 let board = Array.from({ length: SIZE }, () => Array(SIZE).fill(0));
@@ -24,15 +25,19 @@ function printBoard() {
   console.log("          Hecho por Deph ⚡          ");
   console.log("====================================");
   console.log(`Puntaje: ${score}`);
-  console.log("------------------------------------");
+  console.log("");
+
+  const table = new Table({
+    head: ["", "", "", ""],
+    colWidths: [8, 8, 8, 8],
+    style: { head: [], border: [] }
+  });
 
   for (let i = 0; i < SIZE; i++) {
-    let row = board[i]
-      .map(v => (v === 0 ? "." : v.toString().padStart(4, " ")))
-      .join(" | ");
-    console.log(row);
-    if (i < SIZE - 1) console.log("------------------------------------");
+    table.push(board[i].map(v => (v === 0 ? "." : v.toString())));
   }
+
+  console.log(table.toString());
 }
 
 function slide(row) {
@@ -40,7 +45,7 @@ function slide(row) {
   for (let i = 0; i < row.length - 1; i++) {
     if (row[i] === row[i + 1]) {
       row[i] *= 2;
-      score += row[i]; // sumamos al puntaje
+      score += row[i];
       row[i + 1] = 0;
     }
   }
