@@ -126,10 +126,10 @@ class NyxApp(tk.Tk):
 
     def auto_launch(self):
         # Abre todo como en tu init.bat, con pequeños delays para no saturar
-        delayed(self.open_fajillassap, 0.2)
-        delayed(self.open_fastapi, 0.6)
+        # delayed(self.open_fajillassap, 0.2)
+        # delayed(self.open_fastapi, 0.6)
         delayed(self.open_chrome_mavipos, 1.0)
-        delayed(self.open_chrome_normal, 1.4)
+        # delayed(self.open_chrome_normal, 1.4)
         delayed(self.open_thunderbird, 1.8)
 
 def main():
