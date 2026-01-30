@@ -1,0 +1,121 @@
+ & "C:\Program Files\Google\Chrome\Application\chrome.exe" --user-data-dir="C:\temp_chrome" --disable-web-security --disable-site-isolation-trials
+
+SERVIDOR; DEVMAVI
+BASE: Examen
+Usuario: usrexamen
+Contraseña: Abcd123456***
+
+
+AWS
+mavi1
+vh.gonzalez
+Examen.2@25$
+
+
+
+---
+CREACION LAMBDA
+---
+Runtime: Python 3.12 (por la compatibilidad de layer)
+Architecture: x86_64
+Role: service-role/taller-14-11-2022-role-yt3h5csx
+Advanced settings:
+  VPC: vpc-0c0dbfe0f9f9d8d8f (10.2.0.0/16)
+  Subnets:
+    - subnet-0840e030e03985db9 (10.2.11.0/24)
+    - subnet-0013d1c1a1c4a42ad (10.2.10.0/24)
+  Security groups: sg-0519b307a59803bf8 (default)
+Environment variables:
+  secret_name: secrets/sql/dev
+Layers:
+  toolSecret:18 python3.12
+
+---
+Una vez creada, añadir el layer y una variable de entorno para obtener el secret con las credenciales de conexión
+
+Environment variables:
+  key: secret_name
+  value: secrets/sql/dev
+
+Layer:
+  Name: toolSecret
+  Layer version: 18
+
+
+
+
+
+---
+EJEMPLO DE USO
+---
+
+import json
+from ConexionBD import *
+import tools
+
+
+def lambda_handler(event, context):
+    try:
+        # Valiadion de parametros
+        keys = [
+            { "nombre": "cliente", "tipo": str }
+        ]
+        args = tools.obtenerArgumentos(event)
+
+        tools.validarParametros(args, keys)
+        parms = args["cliente"]
+
+        # Obtencion de datos
+        conexionIntelisis = Conexion("Examen")
+
+        sql = f"""SET NOCOUNT ON;
+                SELECT  """
+
+        result = conexionIntelisis.procedure(sql, parms)
+
+        # Respuesta
+        return tools.responseJson(200, result['result'])
+
+    except Exception as e:
+        return tools.responseJson(402, e, Default=str)
+
+
+
+-------------
+
+import tools , ConexionBD
+
+def lambda_handler(event, context):
+    #Validaciones
+    keys= [
+        { 'nombre': 'accion', 'tipo': str},
+        { 'nombre': 'cliente', 'tipo': str}
+    ]
+
+    try:
+        #Se obtienen argumentos desde body
+        args = tools.obtenerArgumentos(event)
+        #Se valida que no este vacio args por falta de parametros o no era json
+        if len(args) == 0: 
+            return tools.responseJson(400,"No se recibieron parámetros")
+        tools.validarParametros(args,keys)
+        if len(args['cliente']) < 9 or len(args['accion']) == 0:
+            return tools.responseJson(400,"Información no válida")
+            
+        #Se establece conexion con base de datos
+        conexionIntelisis= ConexionBD.Conexion("intelisistmp","Mavicubos")
+        
+        sql = f"""
+                SET NOCOUNT ON;
+                EXEC SPERM0906_UpDateDocsCobroCteFinal 
+                ?, ?
+                """
+        parms =  (args['cliente'],args['accion'])  
+        
+        result = conexionIntelisis.procedureNoResult(sql,parms)
+        if result['statusCode'] != 200:
+           return tools.responseJson(result['statusCode'],result["result"])
+
+        return tools.responseJson(result['statusCode'],[{"resp":"Proceso ralizado"}])
+    except Exception as e:
+        return tools.responseJson(402,e,Default=str)
