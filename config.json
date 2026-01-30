@@ -26,3 +26,84 @@
     "show_popup": true
   }
 }
+
+'use client';
+
+
+import React, { useEffect, useState } from 'react';
+import { CONTRACTS } from '../config';
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
+import { ethers } from 'ethers';
+
+
+
+
+export default function Dashboard() {
+  const { helios, treasury, buyAndBurn } = CONTRACTS;
+  const [balance, setBalance] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    if (account) {
+      getBalanceByAccount(account);
+    }
+  }, [account]);
+
+  const getBalanceByAccount = async (account) => {
+    try {
+      const provider = await getProvider();
+      const balance = await provider.getBalance(account);
+      setBalance(ethers.formatEther(balance));
+    } catch (error) {
+      console.error('Error getting balance:', error);
+      setStatus('Error getting balance');
+    }
+  };
+
+
+  const getProvider = async () => {
+    // La extensiÃ³n de la wallet (Coinbase o MetaMask) inyecta window.ethereum
+    const { ethereum } = window;
+    if (!ethereum) {
+      throw new Error("No se detectÃ³ ninguna wallet instalada");
+    }
+
+    // Usamos directamente ethers con el provider inyectado
+    const provider = new ethers.BrowserProvider(ethereum);
+    return provider;
+  }
+
+  const connectWallet = async () => {
+    try {
+      const provider = await getProvider();
+      const accounts = await provider.send('eth_requestAccounts', []);
+      setAccount(accounts[0]);
+      setStatus('Wallet connected');
+    }
+    catch (error) {
+      console.error('Error connecting wallet:', error);
+      setStatus('Error connecting wallet');
+    }
+  };
+
+
+  return (
+    <div className="rounded-lg flex flex-col items-center justify-center w-full h-full p-4 bg-white dark:bg-gray-900 text-black dark:text-white">
+      <h1>Dashboard Helios</h1>
+      <p>Welcome to the dashboard</p>
+
+      <div className="mt-6 w-full max-w-md">
+        <button className='w-full rounded-lg bg-blue-500 hover:bg-blue-600 text-white py-2 px-4' onClick={connectWallet}>
+          {account ? `Connected: ${account}` : 'Connect Wallet'}
+        </button>
+        {balance && <p className='mt-4 text-sm text-gray-600 dark:text-gray-400'>Balance: {balance} ETH</p>}
+
+        {/* <button>Submit</button> */}
+
+        <p className='mt-4 text-sm text-gray-600 dark:text-gray-400'>Status: {status}</p>
+      </div>
+    </div>
+  );
+}
+
